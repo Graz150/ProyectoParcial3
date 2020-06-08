@@ -1,0 +1,154 @@
+﻿@model ProyectoParcial3.Models.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2><font face="Century Gothic">Lista de administradores</font></h2>
+
+<table class="table">
+    <tr>
+        <th>
+            <p><font>@Html.DisplayNameFor(model => model.Usuario.Nombres)</font></p>
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Apellidos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Identificacion)
+        </th>
+        <th>
+            Roles
+        </th>
+    </tr>
+
+    @foreach (var item in Model.ListaUsuariosP)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identificacion)
+
+            </td>
+            <td>
+                @Html.DisplayFor(model => model.RolesByUsuario[item.Id])
+            </td>
+
+            <td>
+                <a href='@Url.Action("Edit", "Administrador")'></a>
+                <a class="btn btn-warning btn-sm" data-toggle="modal" data-target="#ModalEdit" onclick="setusuarioid(''+@item.Email)">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </a>
+                <a href='@Url.Action("Delete","Administrador")'></a>
+                <a class="btn btn-danger btn-sm" data-toggle="modal" data-target="#ModalDelete" onclick="setusuarioid(''+@item.Email)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="modal fade" id="ModalDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalLongTitle">Eliminar</h3>
+            </div>
+            @using (Html.BeginForm("Delete", "Administrador", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(Model => Model.Usuario.Email)
+                <div class="modal-body">
+                    ¿Está seguro que desea eliminar?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" value="Delete">Guardar cambios</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="ModalEdit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h3 class="modal-title" id="exampleModalLongTitle">Editar</h3>
+            </div>
+            @using (Html.BeginForm("Edit", "Administrador", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <form>
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        @Html.HiddenFor(Model => Model.Usuario.Email)
+                        @Html.HiddenFor(Model => Model.Usuario.Id)
+
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Usuario.Nombres, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Usuario.Nombres, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Usuario.Nombres, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Usuario.Apellidos, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Usuario.Apellidos, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Usuario.Apellidos, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.Usuario.Identificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.EditorFor(model => model.Usuario.Identificacion, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Usuario.Identificacion, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary" value="Edit">Guardar cambios</button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+
+
+<script type="text/javascript">
+
+    function setusuarioEmail(Email) {
+        $('#Usuario_Email').val(Email);
+    }
+</script>
+
+<script type="text/javascript">
+
+    function setusuarioEmail(Nombres, Apellidos, Email) {
+        $('#Usuario_Email').val(Email);
+    }
+</script>

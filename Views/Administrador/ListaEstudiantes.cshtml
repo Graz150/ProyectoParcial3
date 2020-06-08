@@ -1,0 +1,97 @@
+﻿@model ProyectoParcial3.Models.ViewModels.UserViewModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Lista de estudiantes</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Nombres)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Apellidos)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.UserName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Identificacion)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Usuario.Roles)
+        </th>
+    </tr>
+
+    @foreach (var item in Model.ListaUsuariosP)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombres)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Apellidos)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Identificacion)
+            </td>
+            <th>
+                @Html.DisplayNameFor(model => model.Usuario.Roles)
+            </th>
+            <td>
+                <a href='@Url.Action("Delete","Administrador")'></a>
+                <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#Algo">
+                    <span class="glyphicon glyphicon-pencil"></span>
+                </button>
+                <a class="btn btn-default btn-sm" data-toggle="modal" data-target="#exampleModalCenter" onclick="setusuarioid(''+@item.Email)">
+                    <span class="glyphicon glyphicon-trash"></span>
+                </a>
+            </td>
+        </tr>
+    }
+</table>
+
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Eliminar</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Delete", "Administrador", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
+                @Html.HiddenFor(Model => Model.Usuario.Email)
+                <div class="modal-body">
+                    ¿Está seguro que desea eliminar?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    <button type="submit" class="btn btn-primary" value="Delete">Guardar cambios</button>
+                </div>
+
+            }
+
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    function setusuarioEmail(Email) {
+        $('#Usuario_Email').val(Email);
+    }
+</script>
